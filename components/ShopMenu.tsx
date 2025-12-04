@@ -150,15 +150,6 @@ export function ShopMenu({ shop, coffees, pastries }: ShopMenuProps) {
                     </div>
                   )}
                 </div>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    router.push(`/shop/${shop.slug}/coffee/${coffee.id}`)
-                  }}
-                  className="w-full mt-3 px-4 py-2 bg-amber-800 text-white rounded-lg hover:bg-amber-900 transition-colors font-medium"
-                >
-                  Add to tray
-                </button>
               </div>
             ))}
           </div>
