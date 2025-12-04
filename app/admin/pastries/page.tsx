@@ -1,7 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { PastryList } from '@/components/admin/PastryList'
+import { requireAuth } from '@/lib/auth'
 
 export default async function PastriesPage() {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data: shops } = await supabase

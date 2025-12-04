@@ -1,11 +1,11 @@
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 export default async function AdminPage() {
-  const supabase = await createClient()
+  // Require authentication - redirects to login if not authenticated
+  await requireAuth()
   
-  // Simple auth check - in production, use proper authentication
-  // For demo, we'll allow access but you can add auth later
+  const supabase = await createClient()
   
   const { data: shops } = await supabase
     .from('shops')

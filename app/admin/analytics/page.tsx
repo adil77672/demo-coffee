@@ -1,7 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { AnalyticsDashboard } from '@/components/admin/AnalyticsDashboard'
+import { requireAuth } from '@/lib/auth'
 
 export default async function AnalyticsPage() {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data: shops } = await supabase

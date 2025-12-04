@@ -1,7 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { PairingList } from '@/components/admin/PairingList'
+import { requireAuth } from '@/lib/auth'
 
 export default async function PairingsPage() {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data: shops } = await supabase

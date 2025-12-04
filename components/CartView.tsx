@@ -29,14 +29,17 @@ export function CartView({ shop, coffee, pastry, pairing }: CartViewProps) {
   }
 
   const handleCheckout = async () => {
-    setIsCheckingOut(true)
-    if (coffee && pastry && pairing) {
-      await trackEvent(shop.id, 'checkout', {
-        coffeeId: coffee.id,
-        pastryId: pastry.id,
-        pairingRuleId: pairing.id,
-      })
+    if (!coffee || !pastry || !pairing) {
+      return
     }
+    
+    setIsCheckingOut(true)
+    await trackEvent(shop.id, 'checkout', {
+      coffeeId: coffee.id,
+      pastryId: pastry.id,
+      pairingRuleId: pairing.id,
+    })
+    
     // Redirect to checkout page
     router.push(`/shop/${shop.slug}/checkout?coffee=${coffee.id}&pastry=${pastry.id}&pairing=${pairing.id}`)
   }

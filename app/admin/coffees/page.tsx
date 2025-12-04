@@ -1,7 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { CoffeeList } from '@/components/admin/CoffeeList'
+import { requireAuth } from '@/lib/auth'
 
 export default async function CoffeesPage() {
+  await requireAuth()
   const supabase = await createClient()
 
   const { data: shops } = await supabase
