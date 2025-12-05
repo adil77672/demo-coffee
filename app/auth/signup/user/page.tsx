@@ -1,25 +1,32 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-})
+const userSignupSchema = z
+  .object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[0-9]/, 'Password must include at least one number'),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  })
 
-type LoginFormData = z.infer<typeof loginSchema>
+type UserSignupFormData = z.infer<typeof userSignupSchema>
 
-function LoginForm() {
+export default function UserSignupPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirect') || '/'
-  const errorParam = searchParams.get('error')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -28,56 +35,42 @@ function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<UserSignupFormData>({
+    resolver: zodResolver(userSignupSchema),
   })
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: UserSignupFormData) => {
     setIsLoading(true)
     setError(null)
     setSuccess(false)
 
     try {
       const supabase = createClient()
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      
+      // Sign up the user with customer role
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
+        options: {
+          data: {
+            name: data.name,
+            role: 'customer', // Mark as customer
+          },
+        },
       })
 
       if (authError) {
-        setError(authError.message || 'Failed to sign in. Please check your credentials.')
+        setError(authError.message || 'Failed to create account. Please try again.')
         setIsLoading(false)
         return
       }
 
       if (authData.user) {
         setSuccess(true)
-        
-        // Verify session is established
-        const { data: { session } } = await supabase.auth.getSession()
-        
-        if (!session) {
-          setError('Session not established. Please try again.')
-          setIsLoading(false)
-          return
-        }
-        
-        // Wait a bit for cookies to be set
-        await new Promise(resolve => setTimeout(resolve, 300))
-        
-        // Check user role and redirect accordingly
-        const userRole = authData.user.user_metadata?.role || 'customer'
-        let finalRedirect = redirectTo
-        
-        // Override redirect based on role
-        if (userRole === 'admin') {
-          finalRedirect = '/admin' // Admin always goes to admin dashboard
-        } else {
-          finalRedirect = '/' // Users go to shops/home page
-        }
-        
-        // Use window.location for full page reload to ensure session is loaded
-        window.location.href = finalRedirect
+        // Redirect to login, which will then redirect to shops
+        setTimeout(() => {
+          router.push('/auth/login?redirect=/')
+        }, 2000)
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
@@ -100,20 +93,20 @@ function LoginForm() {
             </div>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/" className="text-gray-700 hover:text-gray-900">
-              Cart
-            </Link>
-            <Link href="/" className="text-gray-700 hover:text-gray-900">
-              Checkout
-            </Link>
-            <span className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-gray-50">
+            <Link
+              href="/auth/login"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            >
               Login
+            </Link>
+            <span className="px-4 py-2 text-gray-700 font-medium">
+              Customer signup
             </span>
             <Link
-              href="/auth/signup"
+              href="/auth/signup/admin"
               className="px-4 py-2 bg-amber-800 text-white rounded-lg hover:bg-amber-900 font-medium"
             >
-              Sign up
+              Shop owner signup
             </Link>
           </div>
         </div>
@@ -121,32 +114,47 @@ function LoginForm() {
 
       <div className="w-full max-w-md px-4">
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border border-amber-100 p-8">
-          <div className="text-xs uppercase text-gray-400 tracking-wider mb-2">ACCOUNT LOGIN</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign in</h1>
-          <p className="text-gray-600 mb-6">Sign in to access your account or admin panel.</p>
+          <div className="text-xs uppercase text-gray-400 tracking-wider mb-2">CUSTOMER ACCOUNT</div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h1>
+          <p className="text-gray-600 mb-6">
+            Sign up to save your order history and preferences. You can still order without an account!
+          </p>
 
-          {(error || errorParam === 'admin_required') && (
+          {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-800">
-                {errorParam === 'admin_required' 
-                  ? 'Admin access required. Please sign up as a shop owner to access the admin panel.'
-                  : error}
-              </p>
+              <p className="text-sm text-red-800">{error}</p>
             </div>
           )}
 
           {success && (
             <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-sm text-green-800">Sign in successful! Redirecting...</p>
+              <p className="text-sm text-green-800">
+                Account created successfully! Redirecting to login...
+              </p>
             </div>
           )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Your name</label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                {...register('name')}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 ${
+                  errors.name ? 'border-red-300' : 'border-gray-300'
+                }`}
+              />
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+              )}
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
               <input
                 type="email"
-                placeholder="owner@yourcafe.com"
+                placeholder="john@example.com"
                 {...register('email')}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 ${
                   errors.email ? 'border-red-300' : 'border-gray-300'
@@ -161,7 +169,7 @@ function LoginForm() {
               <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
               <input
                 type="password"
-                placeholder="Enter your password"
+                placeholder="At least 8 characters"
                 {...register('password')}
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 ${
                   errors.password ? 'border-red-300' : 'border-gray-300'
@@ -170,15 +178,22 @@ function LoginForm() {
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
               )}
+              <p className="text-xs text-gray-500 mt-1">Must be 8+ characters and include a number.</p>
             </div>
 
-            <div className="text-right">
-              <Link
-                href="/auth/forgot-password"
-                className="text-sm text-amber-700 hover:text-amber-900 font-medium"
-              >
-                Forgot password?
-              </Link>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Re-enter your password"
+                {...register('confirmPassword')}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 ${
+                  errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                }`}
+              />
+              {errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+              )}
             </div>
 
             <button
@@ -186,18 +201,25 @@ function LoginForm() {
               disabled={isLoading || success}
               className="w-full bg-amber-800 hover:bg-amber-900 disabled:bg-amber-400 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors"
             >
-              {isLoading ? 'Signing in...' : success ? 'Success!' : 'Sign in'}
+              {isLoading ? 'Creating account...' : success ? 'Account created!' : 'Create account'}
             </button>
           </form>
 
           <p className="text-center text-sm text-gray-600 mt-6">
-            Don't have an account?{' '}
-            <Link href="/auth/signup/user" className="text-amber-700 hover:text-amber-900 font-medium">
-              Customer signup
+            Already have an account?{' '}
+            <Link href="/auth/login" className="text-amber-700 hover:text-amber-900 font-medium">
+              Sign in
             </Link>
             {' • '}
             <Link href="/auth/signup/admin" className="text-amber-700 hover:text-amber-900 font-medium">
               Shop owner signup
+            </Link>
+          </p>
+
+          <p className="text-center text-xs text-gray-500 mt-4">
+            Don't want an account? You can{' '}
+            <Link href="/" className="text-amber-700 hover:text-amber-900 font-medium">
+              browse and order as a guest
             </Link>
           </p>
         </div>
@@ -206,14 +228,3 @@ function LoginForm() {
   )
 }
 
-export default function LoginPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF7F2' }}>
-        <div className="text-gray-600">Loading...</div>
-      </div>
-    }>
-      <LoginForm />
-    </Suspense>
-  )
-}

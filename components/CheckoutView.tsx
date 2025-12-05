@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Shop, Coffee, Pastry, PairingRule } from '@/lib/types'
 import { trackEvent } from '@/lib/analytics'
+import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,12 +18,26 @@ interface CheckoutViewProps {
 export function CheckoutView({ shop, coffee, pastry, pairing }: CheckoutViewProps) {
   const router = useRouter()
   const [isPlacingOrder, setIsPlacingOrder] = useState(false)
+  const [user, setUser] = useState<any>(null)
   const [formData, setFormData] = useState({
     name: 'Guest',
     tableNumber: 'Table 4',
     orderType: 'Serve to table',
     notes: '',
   })
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setUser(user)
+        setFormData(prev => ({
+          ...prev,
+          name: user.user_metadata?.name || user.email || 'Guest',
+        }))
+      }
+    })
+  }, [])
 
   const handlePlaceOrder = async () => {
     setIsPlacingOrder(true)

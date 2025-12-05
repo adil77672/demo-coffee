@@ -1,8 +1,8 @@
 import { getShopBySlug } from '@/lib/shop'
 import { createClient } from '@/lib/supabase/server'
 import { CheckoutView } from '@/components/CheckoutView'
+import { Navbar } from '@/components/Navbar'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -53,35 +53,7 @@ export default async function CheckoutPage({ params, searchParams }: PageProps) 
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAF7F2' }}>
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href={`/shop/${shop.slug}`} className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-amber-600 rounded flex items-center justify-center">
-              <span className="text-white text-sm font-bold">☕</span>
-            </div>
-            <div>
-              <div className="font-bold text-gray-900">AI Coffee</div>
-              <div className="text-xs text-gray-500">QR cafe ordering</div>
-            </div>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href={`/shop/${shop.slug}/cart`} className="text-gray-700 hover:text-gray-900">
-              Cart
-            </Link>
-            <span className="text-gray-700 font-medium border-b-2 border-amber-800 pb-1">
-              Checkout
-            </span>
-            <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-              Login
-            </button>
-            <button className="px-4 py-2 bg-amber-800 text-white rounded-lg hover:bg-amber-900 font-medium">
-              Sign up
-            </button>
-          </div>
-        </div>
-      </nav>
-
+      <Navbar shopSlug={shop.slug} />
       <div className="container mx-auto px-4 py-8">
         <CheckoutView shop={shop} coffee={coffee} pastry={pastry} pairing={pairing} />
       </div>

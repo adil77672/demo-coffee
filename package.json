@@ -13,7 +13,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "create:test-user": "tsx scripts/create-test-user.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -28,14 +28,18 @@ export async function trackEvent(
   const supabase = createClient()
   const sessionId = getSessionId()
 
+  // Get current user if logged in
+  const { data: { user } } = await supabase.auth.getUser()
+
   const { error } = await supabase.from('analytics_events').insert({
     shop_id: shopId,
     session_id: sessionId,
+    user_id: user?.id || null, // Save user_id if logged in
     event_type: eventType,
     coffee_id: data.coffeeId || null,
     pastry_id: data.pastryId || null,
     pairing_rule_id: data.pairingRuleId || null,
-    metadata: data.metadata || {},
+    event_data: data.metadata || {}, // Store metadata in event_data
   })
 
   if (error) {
