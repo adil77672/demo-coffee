@@ -44,13 +44,43 @@ export default async function ShopPage({ params }: PageProps) {
         {user && (
           <div className="mb-6">
             {user.user_metadata?.role === 'admin' ? (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                <p className="text-sm text-amber-800">
-                  <strong>Admin Mode:</strong> You're viewing this shop as an admin. 
-                  <a href="/admin" className="ml-2 text-amber-600 hover:text-amber-800 underline">
-                    Go to Admin Dashboard →
-                  </a>
-                </p>
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 md:p-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <h3 className="text-base md:text-lg font-bold text-amber-900 mb-2">
+                      🛠️ Admin Mode Active
+                    </h3>
+                    <p className="text-sm md:text-base text-amber-800 mb-3">
+                      You're viewing this shop as an admin. Manage your shop's menu, pairings, and settings from the admin dashboard.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <a
+                        href="/admin"
+                        className="inline-block px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg transition-colors text-sm"
+                      >
+                        Admin Dashboard →
+                      </a>
+                      <a
+                        href="/admin/coffees"
+                        className="inline-block px-4 py-2 bg-white hover:bg-amber-100 text-amber-700 border border-amber-300 font-semibold rounded-lg transition-colors text-sm"
+                      >
+                        Add Coffees
+                      </a>
+                      <a
+                        href="/admin/pastries"
+                        className="inline-block px-4 py-2 bg-white hover:bg-amber-100 text-amber-700 border border-amber-300 font-semibold rounded-lg transition-colors text-sm"
+                      >
+                        Add Pastries
+                      </a>
+                      <a
+                        href="/admin/pairings"
+                        className="inline-block px-4 py-2 bg-white hover:bg-amber-100 text-amber-700 border border-amber-300 font-semibold rounded-lg transition-colors text-sm"
+                      >
+                        Manage Pairings
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">

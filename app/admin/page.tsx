@@ -28,8 +28,79 @@ export default async function AdminPage() {
               You're logged in as an <strong>Admin</strong>.
             </p>
             <p className="text-amber-700 text-sm mt-2">
-              Manage your coffee shop menu, pairings, and view analytics.
+              Complete control: Manage shops, coffees, pastries, pairings, prices, images, and analytics.
             </p>
+            <div className="mt-4 p-4 bg-white rounded-lg border border-amber-200">
+              <h3 className="font-semibold text-amber-900 mb-2 text-sm">📖 Quick Guide:</h3>
+              <ol className="text-xs text-amber-800 space-y-1 list-decimal list-inside">
+                <li>Add Coffees → Select shop, fill details, add image & price</li>
+                <li>Add Pastries → Select shop, fill details, add image & price</li>
+                <li>Create Pairings → Link coffee to pastry, set match score & reasoning</li>
+                <li>Manage Shop → Edit name, description, view QR code</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        {/* Management Capabilities Overview */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 p-5 md:p-6 mb-8">
+          <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4">What You Can Manage</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <span className="text-amber-600 text-xl">☕</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Coffees</h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>✓ Create, Edit, Delete</li>
+                    <li>✓ Manage Name, Roast, Origin</li>
+                    <li>✓ Set Prices & Images</li>
+                    <li>✓ Add Tasting Notes & Description</li>
+                    <li>✓ Activate/Deactivate</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-amber-600 text-xl">🥐</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Pastries</h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>✓ Create, Edit, Delete</li>
+                    <li>✓ Manage Name & Flavor Profile</li>
+                    <li>✓ Set Prices & Images</li>
+                    <li>✓ Add Notes & Description</li>
+                    <li>✓ Activate/Deactivate</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <span className="text-amber-600 text-xl">🔗</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Pairings</h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>✓ Create Coffee-Pastry Pairings</li>
+                    <li>✓ Set Match Scores (1-100)</li>
+                    <li>✓ Add Reasoning Text</li>
+                    <li>✓ Activate/Deactivate</li>
+                    <li>✓ Manage Multiple Pairings per Coffee</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-amber-600 text-xl">🏪</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-1">Shop Settings</h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>✓ Edit Shop Name</li>
+                    <li>✓ Update Description</li>
+                    <li>✓ View QR Code</li>
+                    <li>✓ Manage Shop Details</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

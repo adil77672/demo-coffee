@@ -28,4 +28,5 @@ export default async function ShopsPage() {
       </div>
     </div>
   )
+}
 
