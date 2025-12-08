@@ -33,51 +33,66 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+          <a
+            href="/admin/shops"
+            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-5 md:p-6"
+          >
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">Shops</h2>
+            <p className="text-gray-600 text-xs md:text-sm">Manage shop settings</p>
+          </a>
           <a
             href="/admin/coffees"
-            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-6"
+            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-5 md:p-6"
           >
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Coffees</h2>
-            <p className="text-gray-600 text-sm">Manage coffee menu items</p>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">Coffees</h2>
+            <p className="text-gray-600 text-xs md:text-sm">Manage coffee menu items</p>
           </a>
           <a
             href="/admin/pastries"
-            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-6"
+            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-5 md:p-6"
           >
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Pastries</h2>
-            <p className="text-gray-600 text-sm">Manage pastry menu items</p>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">Pastries</h2>
+            <p className="text-gray-600 text-xs md:text-sm">Manage pastry menu items</p>
           </a>
           <a
             href="/admin/pairings"
-            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-6"
+            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 hover:shadow-md hover:border-amber-200 transition-all p-5 md:p-6"
           >
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Pairings</h2>
-            <p className="text-gray-600 text-sm">Manage coffee-pastry pairings</p>
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">Pairings</h2>
+            <p className="text-gray-600 text-xs md:text-sm">Manage coffee-pastry pairings</p>
           </a>
         </div>
 
-        <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Shops</h2>
+        <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-sm border border-amber-100 p-5 md:p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900">Quick Shop Access</h2>
+            <a
+              href="/admin/shops"
+              className="text-amber-600 hover:text-amber-800 text-sm md:text-base font-medium"
+            >
+              Manage Shops →
+            </a>
+          </div>
           <div className="space-y-2">
             {shops && shops.length > 0 ? (
               shops.map((shop: any) => (
                 <div key={shop.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
-                  <div>
-                    <p className="font-medium text-gray-900">{shop.name}</p>
-                    <p className="text-sm text-gray-600">Slug: {shop.slug}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-gray-900 truncate">{shop.name}</p>
+                    <p className="text-xs md:text-sm text-gray-600 truncate">Slug: {shop.slug}</p>
                   </div>
                   <a
                     href={`/shop/${shop.slug}`}
                     target="_blank"
-                    className="text-amber-600 hover:text-amber-800 text-sm"
+                    className="text-amber-600 hover:text-amber-800 text-xs md:text-sm ml-2 flex-shrink-0"
                   >
-                    View Shop →
+                    View →
                   </a>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500">No shops found</p>
+              <p className="text-gray-500 text-sm md:text-base">No shops found</p>
             )}
           </div>
         </div>

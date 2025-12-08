@@ -61,10 +61,10 @@ export function PastryForm({ shops, pastry, onSuccess, onCancel }: PastryFormPro
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 md:p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="p-4 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
             {pastry ? 'Edit Pastry' : 'Add Pastry'}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -127,7 +127,7 @@ export function PastryForm({ shops, pastry, onSuccess, onCancel }: PastryFormPro
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Image URL
@@ -136,7 +136,7 @@ export function PastryForm({ shops, pastry, onSuccess, onCancel }: PastryFormPro
                   type="url"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-sm md:text-base"
                 />
               </div>
               <div>
@@ -148,7 +148,7 @@ export function PastryForm({ shops, pastry, onSuccess, onCancel }: PastryFormPro
                   step="0.01"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-sm md:text-base"
                 />
               </div>
             </div>
@@ -167,18 +167,18 @@ export function PastryForm({ shops, pastry, onSuccess, onCancel }: PastryFormPro
               </label>
             </div>
 
-            <div className="flex justify-end gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-4">
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm md:text-base"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg disabled:opacity-50"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
               >
                 {isSubmitting ? 'Saving...' : pastry ? 'Update' : 'Create'}
               </button>

@@ -30,7 +30,9 @@ export function ShopMenu({ shop, coffees, pastries }: ShopMenuProps) {
           <div className="flex-1 text-center md:text-left">
             <div className="text-xs uppercase text-gray-400 tracking-wider mb-2">QR MENU</div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{shop.name}</h1>
-            <p className="text-sm md:text-base text-gray-600">Scan, order, and enjoy cozy café vibes.</p>
+            <p className="text-sm md:text-base text-gray-600">
+              {shop.settings?.description || 'Scan, order, and enjoy cozy café vibes.'}
+            </p>
           </div>
           <div className="flex flex-col items-center">
             <div className="bg-white p-3 md:p-4 rounded-lg border-2 border-gray-200">
