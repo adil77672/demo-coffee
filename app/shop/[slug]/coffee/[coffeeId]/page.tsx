@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getPairingsForCoffee } from '@/lib/pairing'
 import { PairingView } from '@/components/PairingView'
 import { Navbar } from '@/components/Navbar'
+import { CoffeeSelectionTracker } from '@/components/CoffeeSelectionTracker'
 import { notFound } from 'next/navigation'
 
 interface PageProps {
@@ -35,7 +36,8 @@ export default async function CoffeePairingPage({ params }: PageProps) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FAF7F2' }}>
       <Navbar shopSlug={shop.slug} />
-      <div className="container mx-auto px-4 py-8">
+      <CoffeeSelectionTracker shopId={shop.id} coffeeId={coffeeId} />
+      <div className="container mx-auto px-4 py-6 md:py-8">
         <PairingView shop={shop} coffee={coffee} pairings={pairings} />
       </div>
     </div>
