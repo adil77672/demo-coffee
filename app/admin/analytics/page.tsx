@@ -11,11 +11,15 @@ export default async function AnalyticsPage() {
     .select('*')
     .order('name')
 
-  const { data: events } = await supabase
+  const { data: events, error: eventsError } = await supabase
     .from('analytics_events')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(1000)
+
+  if (eventsError) {
+    console.error('Error fetching analytics events:', eventsError)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

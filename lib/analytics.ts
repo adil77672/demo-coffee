@@ -34,16 +34,16 @@ export async function trackEvent(
   const { error } = await supabase.from('analytics_events').insert({
     shop_id: shopId,
     session_id: sessionId,
-    user_id: user?.id || null, // Save user_id if logged in
     event_type: eventType,
     coffee_id: data.coffeeId || null,
     pastry_id: data.pastryId || null,
     pairing_rule_id: data.pairingRuleId || null,
-    event_data: data.metadata || {}, // Store metadata in event_data
+    metadata: data.metadata || {}, // Use metadata field (matches schema)
   })
 
   if (error) {
     console.error('Analytics tracking error:', error)
+    // Don't throw - analytics should never break the app
   }
 }
 
