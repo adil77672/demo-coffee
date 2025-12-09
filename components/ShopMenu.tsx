@@ -176,11 +176,11 @@ export function ShopMenu({ shop, coffees, pastries }: ShopMenuProps) {
       {/* AI Pairing Lab Section */}
       <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border border-amber-100 p-6 md:p-8">
         <div className="mb-4 md:mb-6">
-          <div className="text-xs uppercase text-gray-400 tracking-wider mb-2">AI PAIRING LAB</div>
+            <div className="text-xs uppercase text-gray-400 tracking-wider mb-2">AI PAIRING LAB</div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Find the sweetest combo</h2>
           <p className="text-sm md:text-base text-gray-600">
             Pick a coffee to discover perfectly matched pastry pairings with detailed reasoning and match scores.
-          </p>
+            </p>
         </div>
         <div className="mt-4 md:mt-6">
           {coffees.length > 0 ? (

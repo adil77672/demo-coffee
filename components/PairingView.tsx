@@ -35,12 +35,12 @@ export function PairingView({ shop, coffee, pairings }: PairingViewProps) {
   const handleAcceptPairing = async (pairing: PairingWithDetails) => {
     setIsLoading(true)
     try {
-      await trackEvent(shop.id, 'pairing_accept', {
-        coffeeId: coffee.id,
-        pastryId: pairing.pastry_id,
-        pairingRuleId: pairing.id,
-      })
-      router.push(`/shop/${shop.slug}/cart?coffee=${coffee.id}&pastry=${pairing.pastry_id}&pairing=${pairing.id}`)
+    await trackEvent(shop.id, 'pairing_accept', {
+      coffeeId: coffee.id,
+      pastryId: pairing.pastry_id,
+      pairingRuleId: pairing.id,
+    })
+    router.push(`/shop/${shop.slug}/cart?coffee=${coffee.id}&pastry=${pairing.pastry_id}&pairing=${pairing.id}`)
     } catch (error) {
       console.error('Error accepting pairing:', error)
       setIsLoading(false)
@@ -63,12 +63,12 @@ export function PairingView({ shop, coffee, pairings }: PairingViewProps) {
 
   return (
     <div className="w-full">
-      <Link
-        href={`/shop/${shop.slug}`}
+        <Link
+          href={`/shop/${shop.slug}`}
         className="text-amber-700 hover:text-amber-900 mb-4 md:mb-6 inline-block font-medium transition-colors"
-      >
-        ← Back to coffees
-      </Link>
+        >
+          ← Back to coffees
+        </Link>
 
       {/* Coffee Info Card */}
       <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border border-amber-100 p-6 md:p-8 mb-6 md:mb-8">
@@ -87,16 +87,16 @@ export function PairingView({ shop, coffee, pairings }: PairingViewProps) {
           <div className="flex-1">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">{coffee.name}</h1>
             <div className="space-y-2 mb-4">
-              {coffee.roast && (
+            {coffee.roast && (
                 <p className="text-sm md:text-base text-gray-600">
                   <span className="font-semibold text-gray-700">Roast:</span> <span className="font-medium">{coffee.roast}</span>
                 </p>
-              )}
-              {coffee.origin && (
+            )}
+            {coffee.origin && (
                 <p className="text-sm md:text-base text-gray-600">
                   <span className="font-semibold text-gray-700">Origin:</span> <span className="font-medium">{coffee.origin}</span>
                 </p>
-              )}
+            )}
             </div>
             {coffee.tasting_notes && coffee.tasting_notes.length > 0 && (
               <div className="flex flex-wrap gap-2 my-3">
@@ -165,10 +165,10 @@ export function PairingView({ shop, coffee, pairings }: PairingViewProps) {
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-3 md:h-2.5 overflow-hidden">
-                    <div
+                      <div
                       className={`${getScoreColor(pairing.match_score)} h-full rounded-full transition-all duration-500`}
-                      style={{ width: `${pairing.match_score}%` }}
-                    />
+                        style={{ width: `${pairing.match_score}%` }}
+                      />
                   </div>
                 </div>
 
@@ -191,7 +191,7 @@ export function PairingView({ shop, coffee, pairings }: PairingViewProps) {
                   <div className="mb-4">
                     <p className="text-xs text-gray-500 italic leading-relaxed">
                       <span className="font-medium text-gray-600">Flavor notes:</span> {pairing.pastry.flavor_profile}
-                    </p>
+                  </p>
                   </div>
                 )}
 

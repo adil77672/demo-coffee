@@ -200,7 +200,7 @@ export function CheckoutView({ shop, coffee, pastry, pairing }: CheckoutViewProp
                           </span>
                           <p className="text-xs md:text-sm text-amber-700">
                             {pairing.match_score}% match
-                          </p>
+                        </p>
                         </div>
                       )}
                       {pastry.price && (

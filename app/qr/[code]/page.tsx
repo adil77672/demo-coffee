@@ -1,6 +1,5 @@
 import { getShopByQRCode } from '@/lib/shop'
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
 interface PageProps {
@@ -46,41 +45,17 @@ export default async function QRCodePage({ params }: PageProps) {
     )
   }
 
-  // Track scan event - do this before redirect
-  const supabase = await createClient()
+  // Track scan event - save to database first, then redirect to normalized URL
+  const { trackScanEvent } = await import('@/lib/analytics-server')
   
   try {
-    // Create a unique session ID for this scan
-    const sessionId = `qr_scan_${Date.now()}_${Math.random().toString(36).substring(7)}`
-
-    const { error, data } = await supabase
-      .from('analytics_events')
-      .insert({
-        shop_id: shop.id,
-        session_id: sessionId,
-        event_type: 'scan',
-        metadata: {
-          qr_code: code,
-          timestamp: new Date().toISOString(),
-          source: 'qr_scan',
-        },
-      })
-      .select()
-
-    if (error) {
-      console.error('❌ Error tracking scan event:', error)
-      console.error('Error details:', JSON.stringify(error, null, 2))
-    } else if (data && data.length > 0) {
-      console.log('✅ Scan event tracked successfully:', data[0].id)
-    } else {
-      console.warn('⚠️ Scan event insert returned no data')
-    }
+    await trackScanEvent(shop.id, code)
   } catch (error) {
     // Log error but don't block redirect
-    console.error('❌ Exception tracking scan event:', error)
+    console.error('❌ Error tracking scan event:', error)
   }
 
-  // Redirect to shop page
+  // Redirect to normalized shop URL (always redirect, even if tracking fails)
   redirect(`/shop/${shop.slug}`)
 }
 

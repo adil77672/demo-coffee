@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Shop, AnalyticsEvent } from '@/lib/types'
 
 interface AnalyticsDashboardProps {
@@ -10,6 +10,17 @@ interface AnalyticsDashboardProps {
 
 export function AnalyticsDashboard({ shops, events }: AnalyticsDashboardProps) {
   const [selectedShop, setSelectedShop] = useState<string>('')
+
+  // Debug: Log events on mount
+  useEffect(() => {
+    console.log('📊 Analytics Dashboard loaded')
+    console.log('Total events:', events.length)
+    const scanEvents = events.filter(e => e.event_type === 'scan')
+    console.log('Scan events:', scanEvents.length)
+    if (scanEvents.length > 0) {
+      console.log('Latest scan:', scanEvents[0])
+    }
+  }, [events])
 
   const filteredEvents = useMemo(() => {
     return selectedShop
