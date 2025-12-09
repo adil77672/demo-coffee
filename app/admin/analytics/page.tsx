@@ -18,7 +18,14 @@ export default async function AnalyticsPage() {
     .limit(1000)
 
   if (eventsError) {
-    console.error('Error fetching analytics events:', eventsError)
+    console.error('❌ Error fetching analytics events:', eventsError)
+    console.error('Error details:', JSON.stringify(eventsError, null, 2))
+  } else {
+    console.log(`✅ Fetched ${events?.length || 0} analytics events`)
+    if (events && events.length > 0) {
+      const scanEvents = events.filter(e => e.event_type === 'scan')
+      console.log(`📊 Found ${scanEvents.length} scan events`)
+    }
   }
 
   return (

@@ -77,7 +77,7 @@ export default async function ShopPage({ params }: PageProps) {
                         className="inline-block px-4 py-2 bg-white hover:bg-amber-100 text-amber-700 border border-amber-300 font-semibold rounded-lg transition-colors text-sm"
                       >
                         Manage Pairings
-                      </a>
+                  </a>
                     </div>
                   </div>
                 </div>
